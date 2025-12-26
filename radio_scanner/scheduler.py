@@ -3,7 +3,6 @@ import logging
 import schedule
 import time
 from datetime import datetime
-from typing import Callable
 from .summarization import SummarizationService
 from .config import Config
 

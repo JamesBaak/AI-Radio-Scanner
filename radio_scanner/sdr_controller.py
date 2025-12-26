@@ -26,6 +26,10 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+# Simulation mode constants
+SIMULATION_SIGNAL_MIN_DB = -80.0
+SIMULATION_SIGNAL_MAX_DB = -30.0
+
 
 class SDRController:
     """Interface to Software Defined Radio for frequency scanning and recording."""
@@ -124,7 +128,7 @@ class SDRController:
                 signal_strength = float(np.max(power_db))
             else:
                 # Simulation mode - generate random signal strength
-                signal_strength = random.uniform(-80.0, -30.0)
+                signal_strength = random.uniform(SIMULATION_SIGNAL_MIN_DB, SIMULATION_SIGNAL_MAX_DB)
             
             is_active = signal_strength > threshold
             

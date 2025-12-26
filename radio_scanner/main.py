@@ -98,9 +98,9 @@ def monitor_mode():
                 # Check if it's time to summarize
                 scheduler.start(blocking=False)
                 
-                # Wait before next scan (e.g., 5 minutes)
-                logger.info("Waiting 5 minutes before next scan...")
-                time.sleep(300)
+                # Wait before next scan
+                logger.info(f"Waiting {Config.SCAN_INTERVAL_SECONDS} seconds before next scan...")
+                time.sleep(Config.SCAN_INTERVAL_SECONDS)
                 
     except KeyboardInterrupt:
         logger.info("Stopping monitor mode...")

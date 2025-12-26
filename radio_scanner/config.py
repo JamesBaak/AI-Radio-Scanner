@@ -33,6 +33,9 @@ class Config:
     TRANSCRIPT_DIR: str = os.getenv("TRANSCRIPT_DIR", "./transcripts")
     SUMMARY_DIR: str = os.getenv("SUMMARY_DIR", "./summaries")
     
+    # Monitoring Settings
+    SCAN_INTERVAL_SECONDS: int = int(os.getenv("SCAN_INTERVAL_SECONDS", "300"))  # 5 minutes default
+    
     # Summarization Schedule
     SUMMARY_SCHEDULE_HOUR: int = int(os.getenv("SUMMARY_SCHEDULE_HOUR", "1"))
     
