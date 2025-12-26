@@ -97,7 +97,9 @@ The application supports three modes:
 Scan all configured frequencies once and process active ones:
 
 ```bash
-python main.py scan
+python run.py scan
+# or
+python -m radio_scanner.main scan
 ```
 
 This will:
@@ -111,7 +113,9 @@ This will:
 Continuously monitor frequencies with automatic hourly summaries:
 
 ```bash
-python main.py monitor
+python run.py monitor
+# or
+python -m radio_scanner.main monitor
 ```
 
 This will:
@@ -125,7 +129,9 @@ This will:
 Generate a summary of all existing transcripts:
 
 ```bash
-python main.py summarize
+python run.py summarize
+# or
+python -m radio_scanner.main summarize
 ```
 
 This will:

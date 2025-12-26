@@ -32,7 +32,7 @@ setup(
     install_requires=requirements,
     entry_points={
         "console_scripts": [
-            "radio-scanner=main:main",
+            "radio-scanner=radio_scanner.main:main",
         ],
     },
 )

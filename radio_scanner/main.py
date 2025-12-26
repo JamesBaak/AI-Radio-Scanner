@@ -2,11 +2,12 @@
 import logging
 import argparse
 import sys
+import time
 from datetime import datetime
-from radio_scanner.config import Config
-from radio_scanner.scanner import RadioScanner
-from radio_scanner.summarization import SummarizationService
-from radio_scanner.scheduler import SummaryScheduler
+from .config import Config
+from .scanner import RadioScanner
+from .summarization import SummarizationService
+from .scheduler import SummaryScheduler
 
 # Configure logging
 logging.basicConfig(
@@ -98,7 +99,6 @@ def monitor_mode():
                 scheduler.start(blocking=False)
                 
                 # Wait before next scan (e.g., 5 minutes)
-                import time
                 logger.info("Waiting 5 minutes before next scan...")
                 time.sleep(300)
                 

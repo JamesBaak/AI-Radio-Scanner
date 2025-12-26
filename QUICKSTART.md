@@ -14,7 +14,7 @@ pip install -r requirements.txt
 Scan all configured frequencies and process active ones:
 
 ```bash
-python main.py scan
+python run.py scan
 ```
 
 This will:
@@ -28,7 +28,7 @@ This will:
 Create a summary of all transcripts:
 
 ```bash
-python main.py summarize
+python run.py summarize
 ```
 
 ### 3. Continuous Monitoring
@@ -36,7 +36,7 @@ python main.py summarize
 Run continuous monitoring with hourly summaries:
 
 ```bash
-python main.py monitor
+python run.py monitor
 ```
 
 Press Ctrl+C to stop.

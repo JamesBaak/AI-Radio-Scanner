@@ -3,6 +3,26 @@ import logging
 import numpy as np
 from typing import Optional, Tuple
 from datetime import datetime
+import random
+
+# Optional dependencies - import with fallback
+try:
+    from rtlsdr import RtlSdr
+    RTLSDR_AVAILABLE = True
+except ImportError:
+    RTLSDR_AVAILABLE = False
+
+try:
+    import soundfile as sf
+    SOUNDFILE_AVAILABLE = True
+except ImportError:
+    SOUNDFILE_AVAILABLE = False
+
+try:
+    from scipy import signal as scipy_signal
+    SCIPY_AVAILABLE = True
+except ImportError:
+    SCIPY_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
 
@@ -31,8 +51,10 @@ class SDRController:
             True if successful, False otherwise
         """
         try:
-            # Try to import and initialize rtlsdr
-            from rtlsdr import RtlSdr
+            if not RTLSDR_AVAILABLE:
+                logger.warning("rtlsdr library not available, using simulation mode")
+                self._initialized = True  # Allow simulation mode
+                return True
             
             self.sdr = RtlSdr()
             self.sdr.sample_rate = self.sample_rate
@@ -44,11 +66,6 @@ class SDRController:
             
             self._initialized = True
             logger.info(f"SDR initialized with sample_rate={self.sample_rate}, gain={self.gain}")
-            return True
-            
-        except ImportError:
-            logger.warning("rtlsdr library not available, using simulation mode")
-            self._initialized = True  # Allow simulation mode
             return True
             
         except Exception as e:
@@ -107,7 +124,6 @@ class SDRController:
                 signal_strength = float(np.max(power_db))
             else:
                 # Simulation mode - generate random signal strength
-                import random
                 signal_strength = random.uniform(-80.0, -30.0)
             
             is_active = signal_strength > threshold
@@ -137,7 +153,8 @@ class SDRController:
             return False
         
         try:
-            import soundfile as sf
+            if not SOUNDFILE_AVAILABLE:
+                raise ImportError("soundfile library not available")
             
             if self.sdr:
                 # Record from SDR
@@ -179,7 +196,11 @@ class SDRController:
     
     def _resample_audio(self, audio: np.ndarray, target_rate: int) -> np.ndarray:
         """Resample audio to target sample rate."""
-        from scipy import signal
+        if not SCIPY_AVAILABLE:
+            # Simple downsampling if scipy not available
+            original_rate = self.sample_rate
+            step = int(original_rate / target_rate)
+            return audio[::step].astype(np.float32)
         
         # Calculate resampling ratio
         original_rate = self.sample_rate
@@ -187,7 +208,7 @@ class SDRController:
         
         # Resample
         num_samples = int(len(audio) * resample_ratio)
-        resampled = signal.resample(audio, num_samples)
+        resampled = scipy_signal.resample(audio, num_samples)
         
         # Normalize
         if np.max(np.abs(resampled)) > 0:
